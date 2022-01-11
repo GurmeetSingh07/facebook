@@ -5,16 +5,16 @@ const schema = mongoose.Schema({
     type: "String",
     require: true,
     unique: true["user already exist"],
-    minlength: 8,
+    minlength: 4,
   },
   lastName: {
     type: "String",
     require: true,
-    minlength: 8,
   },
   emailId: {
     type: "String",
     require: true,
+    unique:true
   },
   passWord: {
     type: "String",
@@ -30,6 +30,6 @@ const schema = mongoose.Schema({
     type: "String",
     require: true,
     minlength: 6,
-  },
+  }
 });
 module.exports = new mongoose.model("collection", schema);

@@ -4,35 +4,38 @@ const collection = require("../models/schema");
 class userController {
   signUp = async (req, res) => {
     try {
-      const { firtsName, lastName, emailId, passWord, reEnterPassword, Hint } =
-        req.body;
+      const {firstName, lastName, emailId, passWord, reEnterPassword, Hint } =req.body;
 
-      if (
-        !firtsName ||
-        !lastName ||
-        !emailId ||
-        !passWord ||
-        !reEnterPassword ||
-        !Hint
-      ) {
-        res
-          .status(206)
-          .json({ message: "please fill the field", success: false });
+        console.log(req.body)
+     
+      if (!firstName||!lastName||!emailId||!passWord||!reEnterPassword||!Hint)
+  
+     {
+       
+        return res.status(206).json({ message: "please fill the field", success: false });
       }
+
+      if(passWord!=reEnterPassword)
+      {
+          return res.status(400).json({ message: "please enter the same password", success: false})
+      }
+
       const userexits = await collection.findOne({ emailId: emailId });
       if (userexits) {
-        return res
-          .status(400)
-          .json({ message: "User Allready Exist", success: false });
-      } else {
-        const adding = new collection({
-          firtsName,
-          lastName,
-          emailId,
-          passWord,
-          reEnterPassword,
-          Hint,
+        return res .status(400).json({ message: "User Allready Exist", success: false });     
+      }
+      
+      
+      
+      else {
+        const adding = new collection({ firstName, lastName,  emailId, passWord, reEnterPassword, Hint,
+         
         });
+        
+         
+         
+      
+     
         const result = await adding.save();
         return res
           .status(200)

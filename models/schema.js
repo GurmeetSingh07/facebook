@@ -15,14 +15,13 @@ const schema = mongoose.Schema({
   emailId: {
     type: "String",
     require: true,
-    enum: ["user", "admin"],
   },
   passWord: {
     type: "String",
     require: true,
     minlength: 8,
   },
-  reEnterPassworrd: {
+  reEnterPassword: {
     type: "String",
     require: true,
     minlength: 8,

@@ -1,23 +1,24 @@
 const mongoose = require("../Database/conn");
 const collection = require("../models/schema");
-
+const tokenGenerator=require("../middleware/genjwt")
+// 
 class userController {
   signUp = async (req, res) => {
     try {
-      const {firstName, lastName, emailId, passWord, reEnterpassWord, Hint } =req.body;
+      const {firstName, lastName, emailId,   password, reEnterpassword, Hint } =req.body;
 
         console.log(req.body)
      
-      if (!firstName||!lastName||!emailId||!passWord||!reEnterpassWord||!Hint)
+      if (!firstName||!lastName||!emailId||!  password||!reEnterpassword||!Hint)
   
      {
        
         return res.status(206).json({ message: "please fill the field", success: false });
       }
 
-      if(passWord!=reEnterpassWord)
+      if(  password!=reEnterpassword)
       {
-          return res.status(400).json({ message: "please enter the same passWord", success: false})
+          return res.status(400).json({ message: "please enter the same   password", success: false})
       }
 
       const userexits = await collection.findOne({ emailId: emailId });
@@ -28,7 +29,7 @@ class userController {
       
       
       else {
-        const adding = new collection({ firstName, lastName,  emailId, passWord, reEnterpassWord, Hint,
+        const adding = new collection({ firstName, lastName,  emailId,   password, reEnterpassword, Hint,
          
         });
         
@@ -53,18 +54,18 @@ class userController {
   login = async (req, res) => {
 
     try {
-        const {emailId, passWord } = req.body; 
+        const {emailId,   password } = req.body; 
        
         console.log(req.body);
-        if(!emailId || !passWord)
+        if(!emailId || !  password)
         {
            return res.status(206).json({"message":"Please fill the Field","success":false})
         }
         const user = await collection.findOne({emailId })
         if (!user) return res.status(404).json({ "message": "not found","success":false });
 
-        if (user.passWord != passWord) {
-            return res.json({ "message": "Invalid passWord" })
+        if (user.  password !=   password) {
+            return res.json({ "message": "Invalid   password" })
         }
 
         else {

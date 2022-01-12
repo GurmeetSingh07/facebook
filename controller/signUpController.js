@@ -47,16 +47,15 @@ class userController {
            return res.status(206).json({"message":"Please fill the Field","success":false})
         }
         const user = await collection.findOne({emailId:emailId})
-        if (!user) return res.status(404).json({ "message": "not found","success":false });
-
+        if (!user)return res.status(404).json({ "message": "not found","success":false });
         if (user.password!=password) {
-            return res.json({ "message": "Invalid   password" })
+            return res.status(400).json({ "message": "Invalid   password","success":false})
         }
 
         else {
             const token = tokenGenerator(user)
 
-            return res.json({ "message": " User Welcome", token })
+            return res.status(200).json({ "message": " User Welcome", "success":true ,token })
 
         }
     }

@@ -38,4 +38,5 @@ const schema = mongoose.Schema({
     minlength: 6,
   }
 });
-module.exports = new mongoose.model("collection", schema);
+//  collection change  into userCollection
+module.exports = new mongoose.model("userCollection", schema);

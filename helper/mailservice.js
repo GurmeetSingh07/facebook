@@ -8,8 +8,8 @@ var nodemailer = require('nodemailer');
 module.exports= async (globalstorage,emailId)=>{
   try{
   
-  let otp=globalstorage[emailId];
-  // console.log(email)
+  let otp=globalstorage["otp"];
+  console.log(emailId)
   //  console.log(otp)
 
   
@@ -17,15 +17,15 @@ module.exports= async (globalstorage,emailId)=>{
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'arjunsingh4368.18@gmail.com',
-      pass: 'A8146260465@1222223'
+      user: 'dummyt902@gmail.com',
+      pass: '@12346788@'
     },
     tls: {
       rejectUnauthorized: false
     }
   });
   mailOptions = {
-    from: `arjunsingh4368.18@gmail.com`,
+    from: `dummyt902@gmail.com`,
     to: `${emailId}`,
     subject: `Forget Password`,
     text: `Your OTP code is ${otp} `
@@ -33,10 +33,7 @@ module.exports= async (globalstorage,emailId)=>{
   
   
   const sendEmail = await transporter.sendMail(mailOptions)
-      
-  console.log('Email sent: ' + info.response);
-  
-  }
+}
   catch(e){
     console.log(e)
     throw e;

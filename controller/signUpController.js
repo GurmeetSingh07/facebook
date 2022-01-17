@@ -2,9 +2,9 @@ const mongoose = require("../Database/conn");
 const collection = require("../models/schema");
 const tokenGenerator = require("../middleware/genjwt");
 const { storage } = require("debug/src/browser");
-const mailservice = require('../helper/mailservice')
+const mailservice = require('../helper/mailservice');
 
-// 
+ 
 module.exports = localdata = {}
 
 
@@ -13,27 +13,24 @@ module.exports = localdata = {}
 class userController {
   signUp = async (req, res) => {
     try {
-      const { firstName, lastName, emailId, password, reEnterPassword, Hint } = req.body;
+      const { firstName, lastName, emailId, password,  Hint } = req.body;
 
       console.log(req.body)
 
-      if (!firstName || !lastName || !emailId || !password || !reEnterPassword || !Hint) {
+      if (!firstName || !lastName || !emailId || !password  || !Hint) {
         return res.status(206).json({ message: "please fill the field", "success": false });
       }
 
-      if (password != reEnterPassword) {
-        return res.status(400).json({ message: "please enter the same  password", "success": false })
-      }
 
-      const userexits = await collection.findOne({ emailId: emailId });
-      if (userexits) {
-        return res.status(400).json({ message: "User Allready Exist", "success": false });
+      const userExist = await collection.findOne({ emailId: emailId });
+      if (userExist) {
+        return res.status(400).json({ message: "User Already Exist", "success": false });
       }
 
       else {
-        const adding = new collection({ firstName, lastName, emailId, password, reEnterPassword, Hint });
+        const adding = new collection({ firstName, lastName, emailId, password,  Hint });
         const result = await adding.save();
-        return res.status(200).json({ message: "user successfully register", "success": true, result });
+        return res.status(200).json({ message: "user successfully register", success: true });
       }
     } catch (e) {
       console.log(e);
@@ -75,38 +72,39 @@ class userController {
 
       const { emailId } = req.body
       if (!emailId) {
-        res.json({ "message": "false" })
+        res.json({ "message": "invalid Email", success: false })
       }
       else {
 
-        let stroage = {}
+        const emailExist = collection.findOne({email:emailId});
+        if(!emailExist) return res.json({success: false, message:"emailId not registered"});
 
-        stroage[emailId] = Math.floor(Math.random() * 99999);
-        localdata[emailId] = stroage[emailId]
+        let storage = {}
+
+        storage[emailId] = Math.floor(Math.random() * 99999);
+        localdata[emailId] = storage[emailId]
         console.log(localdata)
 
-        mailservice(localdata)
+        await mailservice(localdata,emailId);
 
 
-        return res.json({ "message": "true" });
+        return res.json({ "message": "email successfully sent",success:true });
       }
     }
     catch (err) {
       console.log(err)
-      res.json({ "message": err.message })
+      return res.status(500).json({ "message": err.message })
     }
   }
 
  reset=(req,res)=>
  {
-let  email=Object.keys(localdata)[0]
-  let   otp=localdata[email]
-   console.log( email)
-   console.log( otp)
-   if(req.emailId || req.otp)
-   {
+   const {emailId,otp,newPassword} = req.body;
 
-   }
+  let otp=localdata[emailId]
+  console.log( emailId)
+  console.log( otp)
+    
    
 
 

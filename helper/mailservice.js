@@ -1,13 +1,14 @@
+const res = require('express/lib/response');
 var nodemailer = require('nodemailer');
 
 
 
 
 
-module.exports=(globalstorage)=>{
-
-  let email=Object.keys(globalstorage)[0]
-  let otp=globalstorage[email]
+module.exports= async (globalstorage,emailId)=>{
+  try{
+  
+  let otp=globalstorage[emailId];
   // console.log(email)
   //  console.log(otp)
 
@@ -25,18 +26,20 @@ module.exports=(globalstorage)=>{
   });
   mailOptions = {
     from: `arjunsingh4368.18@gmail.com`,
-    to: `${email}`,
+    to: `${emailId}`,
     subject: `Forget Password`,
     text: `Your OTP code is ${otp} `
   }
   
   
-  transporter.sendMail(mailOptions, function(error, info){
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
-  });
+  const sendEmail = await transporter.sendMail(mailOptions)
+      
+  console.log('Email sent: ' + info.response);
+  
+  }
+  catch(e){
+    console.log(e)
+    throw e;
+  }
 }
 
